@@ -1,7 +1,25 @@
-// Description: This program demonstrates the use of interfaces in Go.
 package main
 
 import "fmt"
+
+type GenericEmployee struct {
+	FullName             string
+	EmailAddress         string
+	WeeksWorkedAtCompany int
+	HoursWorkedPerWeek   int
+}
+
+func (g GenericEmployee) Name() string {
+	return g.FullName
+}
+
+func (g GenericEmployee) Email() string {
+	return g.EmailAddress
+}
+
+func (g GenericEmployee) WorkDetails() (int, int) {
+	return g.WeeksWorkedAtCompany, g.HoursWorkedPerWeek
+}
 
 // Employee interface defines the contract for all professions
 type Employee interface {
@@ -14,11 +32,11 @@ type Employee interface {
 /*
 // Maker struct implements the Employee interface
 type Maker struct {
-	FullName             string
-	EmailAddress         string
+	FullName         	string
+	EmailAddress     	string
 	WeeksWorkedAtCompany int
 	HoursWorkedPerWeek   int
-	ProjectsWorkedOn     []string
+	ProjectsWorkedOn 	[]string
 }
 
 // Implement the Employee interface for Maker
@@ -40,26 +58,11 @@ func (m Maker) Skills() []string {
 */
 // Writer struct implements the Employee interface
 type Writer struct {
-	FullName             string
-	EmailAddress         string
-	WeeksWorkedAtCompany int
-	HoursWorkedPerWeek   int
-	GenresWritten        []string
+	GenericEmployee
+	GenresWritten []string
 }
 
 // Implement the Employee interface for Writer
-func (w Writer) Name() string {
-	return w.FullName
-}
-
-func (w Writer) Email() string {
-	return w.EmailAddress
-}
-
-func (w Writer) WorkDetails() (int, int) {
-	return w.WeeksWorkedAtCompany, w.HoursWorkedPerWeek
-}
-
 func (w Writer) Skills() []string {
 	return w.GenresWritten
 }
@@ -102,21 +105,23 @@ func PrintEmployeeDetails(e Employee) {
 func main() {
 	// Create a Writer instance
 	writer := Writer{
-		FullName:             "Charlie",
-		EmailAddress:         "charlie@example.com",
-		WeeksWorkedAtCompany: 104,
-		HoursWorkedPerWeek:   6,
-		GenresWritten:        []string{"Fiction", "Non-Fiction", "Poetry"},
+		GenericEmployee: GenericEmployee{
+			FullName:             "Charlie",
+			EmailAddress:         "charlie@example.com",
+			WeeksWorkedAtCompany: 104,
+			HoursWorkedPerWeek:   6,
+		},
+		GenresWritten: []string{"Fiction", "Non-Fiction", "Poetry"},
 	}
 
 	/*	// Create a Maker instance
-		maker := Maker{
-			FullName:             "Alice",
-			EmailAddress:         "alice@example.com",
-			WeeksWorkedAtCompany: 52,
-			HoursWorkedPerWeek:   40,
-			ProjectsWorkedOn:     []string{"Photography", "Cutting Boards", "Candles"},
-		}*/
+			maker := Maker{
+		    	FullName:         	"Alice",
+		    	EmailAddress:     	"alice@example.com",
+		    	WeeksWorkedAtCompany: 52,
+		    	HoursWorkedPerWeek:   40,
+		    	ProjectsWorkedOn: 	[]string{"Photography", "Cutting Boards", "Candles"},
+			}*/
 
 	// Create an Artist instance
 	artist := Artist{
