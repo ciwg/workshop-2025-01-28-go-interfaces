@@ -99,6 +99,19 @@ func PrintEmployeeDetails(e Employee) {
 	fmt.Printf("Skills: %v\n\n", e.Skills())
 }
 
+func MostSenior(eList []Employee) Employee {
+	mostSenior := eList[0]
+	mostSeniorWeeks, _ := mostSenior.WorkDetails() // Extract the number of weeks worked
+	for _, e := range eList {
+		weeks, _ := e.WorkDetails() // Compare based on weeks worked
+		if weeks > mostSeniorWeeks {
+			mostSenior = e
+			mostSeniorWeeks = weeks
+		}
+	}
+	return mostSenior
+}
+
 func main() {
 	// Create a Writer instance
 	writer := Writer{
@@ -131,5 +144,10 @@ func main() {
 	PrintEmployeeDetails(writer)
 	PrintEmployeeDetails(artist)
 	/*	PrintEmployeeDetails(maker)*/
+
+	// Create a list of employees
+	employees := []Employee{writer, artist}
+	fmt.Println("Most Senior Employee:")
+	PrintEmployeeDetails(MostSenior(employees))
 
 }
