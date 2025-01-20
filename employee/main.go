@@ -1,9 +1,12 @@
 // Description: This program demonstrates the use of interfaces in Go.
+// It defines an Employee interface with methods that must be implemented by all professions.
+// It then defines three professions: Writer, Artist, and Maker, each implementing the Employee interface.
+
 package main
 
 import "fmt"
 
-// Employee interface defines the contract for all professions
+// GenericEmployee struct needed to implement the Employee interface
 type GenericEmployee struct {
 	FullName             string // Get the employee's name
 	EmailAddress         string // Get the employee's email
@@ -12,18 +15,22 @@ type GenericEmployee struct {
 
 }
 
+// Implement the Employee interface for GenericEmployee
 func (g GenericEmployee) Name() string {
 	return g.FullName
 }
 
+// Implement the Employee interface for GenericEmployee
 func (g GenericEmployee) Email() string {
 	return g.EmailAddress
 }
 
+// Implement the Employee interface for GenericEmployee
 func (g GenericEmployee) WorkDetails() (int, int) {
 	return g.WeeksWorkedAtCompany, g.HoursWorkedPerWeek
 }
 
+// Implement the Employee interface for GenericEmployee
 type Employee interface {
 	Name() string
 	Email() string
@@ -105,7 +112,7 @@ func main() {
 			FullName:             "Alice",
 			EmailAddress:         "alice@example.com",
 			WeeksWorkedAtCompany: 52,
-			HoursWorkedPerWeek:   40,
+			HoursWorkedPerWeek:   10,
 		},
 		ProjectsWorkedOn: []string{"Photography", "Cutting Boards", "Candles"},
 	}
