@@ -15,22 +15,37 @@ type GenericEmployee struct {
 
 }
 
-// Implement the Employee interface for GenericEmployee
+// Name returns the employee's name and implements the Employee
+// interface Name() method
 func (g GenericEmployee) Name() string {
 	return g.FullName
 }
 
-// Implement the Employee interface for GenericEmployee
+// Email returns the employee's email and implements the Employee
+// interface Email() method
 func (g GenericEmployee) Email() string {
 	return g.EmailAddress
 }
 
-// Implement the Employee interface for GenericEmployee
+// WorkDetails returns the number of weeks worked and hours worked per week
+// and implements the Employee interface WorkDetails() method
 func (g GenericEmployee) WorkDetails() (int, int) {
 	return g.WeeksWorkedAtCompany, g.HoursWorkedPerWeek
 }
 
-// Implement the Employee interface for GenericEmployee
+// Skills returns the skills of the employee and implements the
+// Employee interface Skills() method.  This method is overridden by
+// the Writer, Artist, and Maker structs so we just return an empty
+// slice here.  We normally would never call this method unless we
+// actually create an instance of GenericEmployee, but we include it
+// here for completeness and so ":GoImplements" can test if
+// GenericEmployee implements the rest of the Employee interface.
+func (g GenericEmployee) Skills() []string {
+	return []string{}
+}
+
+// Employee interface defines the methods that must be implemented by
+// all professions.
 type Employee interface {
 	Name() string
 	Email() string
@@ -38,40 +53,52 @@ type Employee interface {
 	Skills() []string
 }
 
-// Maker struct implements the Employee interface
+// Maker is a struct that represents someone who makes things in
+// projects.  Because they are also an employee, this struct
+// implements the Employee interface.
 type Maker struct {
 	GenericEmployee
 	ProjectsWorkedOn []string
 }
 
-// Implement the Employee interface for Maker
+// Skills returns the projects worked on by the Maker
 func (m Maker) Skills() []string {
 	return m.ProjectsWorkedOn
 }
 
-// Writer struct implements the Employee interface
+// Writer is a struct that represents someone who writes things that
+// fit into genres.  Because they are also an employee, this struct
+// implements the Employee interface.
 type Writer struct {
 	GenericEmployee
 	GenresWritten []string
 }
 
-// Implement the Employee interface for Writer
+// Skills returns the genres written by the Writer
 func (w Writer) Skills() []string {
 	return w.GenresWritten
 }
 
-// Artist struct implements the Employee interface
+// Artist is a struct that represents someone who creates art in
+// various styles.  Because they are also an employee, this struct
+// implements the Employee interface.
 type Artist struct {
 	GenericEmployee
 	ArtStyles []string
 }
 
-// Implement the Employee interface for Artist
+// Skills returns the art styles of the Artist
 func (a Artist) Skills() []string {
 	return a.ArtStyles
 }
 
-// PrintEmployeeDetails is a reusable function to display employee details
+// PrintEmployeeDetails is a reusable function to display employee
+// details.  It takes an Employee interface as an argument so it can
+// be used with any profession that implements the Employee interface.
+// We have to write this as a function rather than a method on the
+// Employee interface because Go does not support methods on interfaces.
+// (In more formal terms, Go does not support interfaces as receivers;
+// receivers need to be concrete types.)
 func PrintEmployeeDetails(e Employee) {
 	fmt.Printf("Name: %s\n", e.Name())
 	fmt.Printf("Email: %s\n", e.Email())
@@ -80,7 +107,14 @@ func PrintEmployeeDetails(e Employee) {
 	fmt.Printf("Skills: %v\n\n", e.Skills())
 }
 
-// MostSenior returns the most senior employee based on weeks worked
+// MostSenior returns the most senior employee based on weeks worked.
+// If two employees have worked the same number of weeks, it will
+// return the first one it encounters.  It takes a slice of Employee
+// interfaces as an argument so it can be used with any profession
+// that implements the Employee interface. It will return something
+// that also implements the Employee interface. As with
+// PrintEmployeeDetails, we need to write this as a function rather
+// than a method.
 func MostSenior(eList []Employee) Employee {
 	mostSenior := eList[0]
 	mostSeniorWeeks, _ := mostSenior.WorkDetails() // Extract the number of weeks worked
@@ -97,12 +131,20 @@ func MostSenior(eList []Employee) Employee {
 func main() {
 	// Create a Writer instance
 	writer := Writer{
+		// Because the GenericEmployee struct is embedded in the Writer struct,
+		// we initialize it here as a nested struct literal.  Note
+		// that the left-hand side of the colon is the field name in
+		// the Writer struct, and the right-hand side is the field
+		// value.
 		GenericEmployee: GenericEmployee{
 			FullName:             "Charlie",
 			EmailAddress:         "charlie@example.com",
 			WeeksWorkedAtCompany: 104,
 			HoursWorkedPerWeek:   6,
 		},
+		// The []string{...} syntax is a slice literal.  It creates a
+		// slice of strings.  We use it here to initialize the GenresWritten
+		// field of the Writer struct.
 		GenresWritten: []string{"Fiction", "Non-Fiction", "Poetry"},
 	}
 
@@ -133,8 +175,9 @@ func main() {
 	PrintEmployeeDetails(artist)
 	PrintEmployeeDetails(maker)
 
-	// Create a list of employees
+	// Create a list of employees from a slice literal.
 	employees := []Employee{writer, artist, maker}
+
 	fmt.Println("Most Senior Employee:")
 	PrintEmployeeDetails(MostSenior(employees))
 
