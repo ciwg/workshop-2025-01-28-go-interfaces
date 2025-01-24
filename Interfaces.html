@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interfaces in Go</title>
+</head>
+<body>
+    <textarea id="source">
+
+class: center, middle
+
+# Interfaces in Go
+
+---
+
+## Workshop Overview
+
+### What We'll Cover:
+
+1. **Structs**: The foundation for defining data in Go.
+2. **Embedding**: How to reuse and extend structs.
+3. **Interfaces**: The power of abstraction and polymorphism in Go.
+
+*(Don't worry if you're new to Go—we'll start simple!)*
+
+---
+
+## What is a Struct?
+
+- **Structs** are custom data types in Go.
+- They group related fields together.
+
+### Example:
+```go
+// GenericEmployee struct
+type GenericEmployee struct {
+    FullName             string
+    EmailAddress         string
+    WeeksWorkedAtCompany int
+    HoursWorkedPerWeek   int
+}
+```
+- **Fields**: Define the properties of a struct.
+- Used to represent real-world objects (e.g., employees).
+
+---
+
+## What is Embedding?
+
+- Embedding lets one struct **inherit** fields and methods of another.
+- Promotes **code reuse** and avoids duplication.
+
+### Example:
+```go
+// Maker struct embeds GenericEmployee
+type Maker struct {
+    GenericEmployee
+    ProjectsWorkedOn []string
+}
+```
+- `Maker` can access `FullName`, `EmailAddress`, etc., from `GenericEmployee`.
+- Enables **composition over inheritance**.
+
+---
+
+## Why Interfaces?
+
+- **Interfaces** define a set of methods that must be implemented.
+- Allow different types to share common behavior.
+- Enable **polymorphism**: Write code that works with different types.
+
+### Example:
+```go
+// Employee interface
+type Employee interface {
+    Name() string
+    Email() string
+    WorkDetails() (int, int)
+    Skills() []string
+}
+```
+- Any struct implementing these methods is an `Employee`.
+
+---
+
+## Implementing Interfaces
+
+### Example: GenericEmployee
+
+```go
+func (g GenericEmployee) Name() string {
+    return g.FullName
+}
+
+func (g GenericEmployee) Email() string {
+    return g.EmailAddress
+}
+
+func (g GenericEmployee) WorkDetails() (int, int) {
+    return g.WeeksWorkedAtCompany, g.HoursWorkedPerWeek
+}
+
+func (g GenericEmployee) Skills() []string {
+    return []string{} // Placeholder
+}
+```
+- `GenericEmployee` satisfies the `Employee` interface.
+
+---
+
+## Example: Specialized Structs
+
+### Writer
+```go
+type Writer struct {
+    GenericEmployee
+    GenresWritten []string
+}
+
+func (w Writer) Skills() []string {
+    return w.GenresWritten
+}
+```
+### Maker
+```go
+type Maker struct {
+    GenericEmployee
+    ProjectsWorkedOn []string
+}
+
+func (m Maker) Skills() []string {
+    return m.ProjectsWorkedOn
+}
+```
+- Each struct customizes the `Skills()` method.
+
+---
+
+## Reusing Code with Interfaces
+
+### Example: PrintEmployeeDetails
+```go
+func PrintEmployeeDetails(e Employee) {
+    fmt.Printf("Name: %s\n", e.Name())
+    fmt.Printf("Email: %s\n", e.Email())
+    weeks, hours := e.WorkDetails()
+    fmt.Printf("Worked for %d weeks, %d hours per week\n", weeks, hours)
+    fmt.Printf("Skills: %v\n\n", e.Skills())
+}
+```
+- Takes any `Employee`.
+- Works for `Writer`, `Maker`, or any struct implementing `Employee`.
+
+---
+
+## Polymorphism in Action
+
+### Example: MostSenior Employee
+```go
+func MostSenior(eList []Employee) Employee {
+    mostSenior := eList[0]
+    mostSeniorWeeks, _ := mostSenior.WorkDetails()
+    for _, e := range eList {
+        weeks, _ := e.WorkDetails()
+        if weeks > mostSeniorWeeks {
+            mostSenior = e
+            mostSeniorWeeks = weeks
+        }
+    }
+    return mostSenior
+}
+```
+- Finds the employee with the most weeks worked.
+- Works for any type implementing the `Employee` interface.
+
+---
+
+## Real-World Analogy
+
+- Think of `Employee` as a **job description**:
+  - Requires specific tasks (methods).
+- A `Writer` or `Maker` is like a person in that role:
+  - Implements the tasks (methods).
+- **Flexibility**: Different roles, same expectations.
+
+---
+
+## Key Takeaways
+
+1. **Structs**: Define real-world objects.
+2. **Embedding**: Reuse and extend functionality.
+3. **Interfaces**: Enable abstraction and polymorphism.
+
+---
+
+## Thank You!
+
+Questions? Let's dive into the code demo!
+   </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script>
+        var slideshow = remark.create();
+    </script>
+</body>
+</html>
