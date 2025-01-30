@@ -41,6 +41,7 @@ func (g GenericEmployee) WorkDetails() (int, int) {
 // here for completeness and so ":GoImplements" can test if
 // GenericEmployee implements the rest of the Employee interface.
 func (g GenericEmployee) Skills() []string {
+	panic("Skills() method not implemented on GenericEmployee and should not be called.  It should be overridden by e.g. Writer, Artist, and Maker.")
 	return []string{}
 }
 
