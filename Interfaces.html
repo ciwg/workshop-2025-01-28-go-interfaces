@@ -245,19 +245,75 @@ func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
 
 ---
 
-Examples from my mocking  code 
-*** from my mocking  code        ***
-
-
-
-```
-Example from my code
+### DriveServiceInterface
 
 ```
 
+type DriveServiceInterface interface {
+    FilesList(ctx context.Context, folderID string) ([]File, error)
+    FetchRevisionCount(docID string) (int, error)
+    RevisionsGet(docID, revisionID string) (Revision, error)
+    ListRevisions(fileID string) ([]Revision, error)
+    FetchDocIDs(folderID string) ([]string, error)
+}
+
+---
+### Used in production code
+
+```
+type GoogleDriveService struct {
+    service *drive.Service // Google Drive API client
+}
+
+// Implement FilesList method
+func (g *GoogleDriveService) FilesList(ctx context.Context, folderID string) ([]File, error) {
+    query := fmt.Sprintf("'%s' in parents", folderID)
+    files, err := g.service.Files.List().Q(query).Do()
+    if err != nil {
+        return nil, err
+    }
+
+    var fileList []File
+    for _, f := range files.Files {
+        fileList = append(fileList, File{Id: f.Id, Name: f.Name})
+    }
+    return fileList, nil
+}
+
+```
 
 ---
 
+### For testing
+
+```
+ type MockDriveService struct{}
+
+ func (m *MockDriveService) FilesList(ctx context.Context, folderID string) ([]File, error) {
+    return []File{
+        {Id: "mock-file-1", Name: "Mock File 1"},
+        {Id: "mock-file-2", Name: "Mock File 2"},
+    }, nil
+ }
+
+```
+Using the mock in tests:
+```
+ func TestFilesList(t *testing.T) {
+    ctx := context.Background()
+    driveService := &MockDriveService{} // Use the mock
+
+    files, err := driveService.FilesList(ctx, "mock-folder")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    if len(files) != 2 {
+        t.Errorf("Expected 2 files, got %d", len(files))
+    }
+ }
+ ```
+---
 ## Real-World Use Cases
 
 - **PromiseGrid**: Uses a **library of hashes** → perfect for an interface-based design.
