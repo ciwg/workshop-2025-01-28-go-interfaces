@@ -114,6 +114,8 @@ type Writer struct {
     GenericEmployee
     GenresWritten []string
 }
+---
+### Example: Specialized Structs
 
 func (w Writer) Skills() []string {
     return w.GenresWritten
