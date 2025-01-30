@@ -114,13 +114,16 @@ type Writer struct {
     GenericEmployee
     GenresWritten []string
 }
----
-### Example: Specialized Structs
 
 func (w Writer) Skills() []string {
     return w.GenresWritten
 }
 ```
+
+---
+
+## Example: Specialized Structs
+
 ### Maker
 ```go
 type Maker struct {

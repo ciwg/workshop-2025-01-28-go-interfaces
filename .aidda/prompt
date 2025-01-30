@@ -1,0 +1,13 @@
+# write commit message here -- it will be used as the LLM prompt
+
+Sysmsg: You are an expert Go programmer. Please make the requested changes to the given code or documentation.
+In: .Interfaces.html.swp
+    Interfaces.html
+    LICENSE
+    README.md
+    employee/main.go
+Out: .Interfaces.html.swp
+    Interfaces.html
+    LICENSE
+    README.md
+    employee/main.go
