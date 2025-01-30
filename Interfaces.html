@@ -190,11 +190,70 @@ func MostSenior(eList []Employee) Employee {
 2. **Embedding**: Reuse and extend functionality.
 3. **Interfaces**: Enable abstraction and polymorphism.
 
+
 ---
+
+## Grid-POC & Interfaces
+
+- **Grid-POC** relies on modular components to function efficiently.
+- **Interfaces** allow us to define common behavior for different implementations.
+- **Merkle-DAG & Hash Chains**: Interfaces enable flexible interaction with these structures.
+
+### Example:
+```go
+type HashStorage interface {
+    StoreHash(data []byte) string
+    RetrieveHash(hash string) ([]byte, error)
+}
+```
+- This allows us to swap in different **storage backends** without changing core logic.
+
+---
+
+## Testing with Interfaces
+
+- Using **interfaces** allows us to mock dependencies for testing.
+- Mocks let us verify behavior **without real API calls**.
+
+### Example:
+```go
+type MockStorage struct{}
+
+func (m MockStorage) StoreHash(data []byte) string {
+    return "mocked-hash"
+}
+
+func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
+    return []byte("mocked-data"), nil
+}
+```
+- Helps in writing **isolated, reliable unit tests**.
+
+---
+
+## Real-World Use Cases
+
+- **PromiseGrid**: Uses a **library of hashes** → perfect for an interface-based design.
+- **IoT & Makerspace Management**: Standardized API interfaces improve device interoperability.
+- **Blockchain-Based Storage**: Interfaces abstract storage logic for different backends.
+
+### Example: Distributed File Interface
+```go
+type DistributedFile interface {
+    Store(data []byte) (string, error)
+    Retrieve(hash string) ([]byte, error)
+}
+```
+- Works for **IPFS, blockchain storage, or cloud-based solutions**.
+
+---
+
 
 ## Thank You!
 
-Questions? Let's dive into the code demo!
+Questions?  
+
+**Repo**: [Workshop Interfaces GitHub](https://github.com/ciwg/workshop-2025-01-28-go-interfaces).
    </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
