@@ -45,7 +45,7 @@ type GenericEmployee struct {
 
 ## What is Embedding?
 
-- Embedding lets one struct **inherit** fields and methods of another.
+- Embedding lets one struct **includes** fields and methods of another.
 - Promotes **code reuse** and avoids duplication.
 
 ### Example:
@@ -57,7 +57,7 @@ type Maker struct {
 }
 ```
 - `Maker` can access `FullName`, `EmailAddress`, etc., from `GenericEmployee`.
-- Enables **composition over inheritance**.
+- Enables **composition instead of inheritance**.
 
 ---
 
