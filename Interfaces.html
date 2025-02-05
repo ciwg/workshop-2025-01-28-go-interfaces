@@ -374,7 +374,9 @@ func (g *GoogleDriveService) FilesList(ctx context.Context, folderID string) ([]
  }
 
 ```
+	    
 Using the mock in tests:
+	    
 ```
  func TestFilesList(t *testing.T) {
     ctx := context.Background()
@@ -389,8 +391,11 @@ Using the mock in tests:
         t.Errorf("Expected 2 files, got %d", len(files))
     }
  }
+	    
  ```
+	    
 ---
+
 ## Real-World Use Cases
 
 - **PromiseGrid**: Uses a **library of hashes** → perfect for an interface-based design.
