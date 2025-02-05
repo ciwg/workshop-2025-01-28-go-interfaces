@@ -304,7 +304,7 @@ type HashStorage interface {
 - Mocks let us verify behavior **without real API calls**.
 
 ### Example:
-```go
+```
 type MockStorage struct{}
 
 func (m MockStorage) StoreHash(data []byte) string {
@@ -315,6 +315,7 @@ func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
     return []byte("mocked-data"), nil
 }
 ```
+
 - Helps in writing **isolated, reliable unit tests**.
 
 ---
@@ -322,7 +323,6 @@ func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
 ### DriveServiceInterface
 
 ```
-
 type DriveServiceInterface interface {
     FilesList(ctx context.Context, folderID string) ([]File, error)
     FetchRevisionCount(docID string) (int, error)
@@ -330,7 +330,6 @@ type DriveServiceInterface interface {
     ListRevisions(fileID string) ([]Revision, error)
     FetchDocIDs(folderID string) ([]string, error)
 }
-	    
 ```
 	    
 ---
