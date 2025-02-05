@@ -304,8 +304,9 @@ type HashStorage interface {
 - Mocks let us verify behavior **without real API calls**.
 
 ### Example:
-```
-type MockStorage struct{}
+```go
+// MockStorage struct
+ type MockStorage struct{}
 
 func (m MockStorage) StoreHash(data []byte) string {
     return "mocked-hash"
@@ -320,8 +321,9 @@ func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
 
 ---
 
-### DriveServiceInterface
-``` 
+## DriveServiceInterface
+```go
+// DriveServiceInterface definition
 type DriveServiceInterface interface {
     FilesList(ctx context.Context, folderID string) ([]File, error)
     FetchRevisionCount(docID string) (int, error)
@@ -330,10 +332,11 @@ type DriveServiceInterface interface {
     FetchDocIDs(folderID string) ([]string, error)
 }
 ```
-	    
----	    
-### Used in production code
-```
+---
+
+## Used in Production Code
+```go
+// GoogleDriveService struct
 type GoogleDriveService struct {
     service *drive.Service // Google Drive API client
 }
@@ -355,24 +358,23 @@ func (g *GoogleDriveService) FilesList(ctx context.Context, folderID string) ([]
 ```
 ---
 
-### For testing
+## For Testing
+```go
+// MockDriveService struct
+type MockDriveService struct{}
 
-```
- type MockDriveService struct{}
-
- func (m *MockDriveService) FilesList(ctx context.Context, folderID string) ([]File, error) {
+// Implement FilesList in mock
+type (m *MockDriveService) FilesList(ctx context.Context, folderID string) ([]File, error) {
     return []File{
         {Id: "mock-file-1", Name: "Mock File 1"},
         {Id: "mock-file-2", Name: "Mock File 2"},
     }, nil
- }
+}
+```
 
-```
-	    
-Using the mock in tests:
-	    
-```
- func TestFilesList(t *testing.T) {
+### Using the mock in tests:
+```go
+func TestFilesList(t *testing.T) {
     ctx := context.Background()
     driveService := &MockDriveService{} // Use the mock
 
@@ -384,28 +386,8 @@ Using the mock in tests:
     if len(files) != 2 {
         t.Errorf("Expected 2 files, got %d", len(files))
     }
- }
-	    
- ```
-	    
----
-
-## Real-World Use Cases
-
-- **PromiseGrid**: Uses a **library of hashes** → perfect for an interface-based design.
-- **IoT & Makerspace Management**: Standardized API interfaces improve device interoperability.
-- **Blockchain-Based Storage**: Interfaces abstract storage logic for different backends.
-
-### Example: Distributed File Interface
-```go
-type DistributedFile interface {
-    Store(data []byte) (string, error)
-    Retrieve(hash string) ([]byte, error)
 }
 ```
-- Works for **IPFS, blockchain storage, or cloud-based solutions**.
-
-  
 ---
 
 ## Switching Between Production and Test Implementations
@@ -416,9 +398,9 @@ type DistributedFile interface {
 
 ---
 
-### Interface Definition
-
+## Interface Definition
 ```go
+// AuthService interface
 type AuthService interface {
     GetClient(config *oauth2.Config) (*http.Client, error)
 }
@@ -428,12 +410,14 @@ type AuthService interface {
 
 ---
 
-### Production vs. Mock Implementation
+## Production vs. Mock Implementation
 
-**Production (Real OAuth Client)**:
+### Production (Real OAuth Client):
 ```go
+// AuthGoogleService struct
 type AuthGoogleService struct{}
 
+// Implement GetClient
 func (s *AuthGoogleService) GetClient(config *oauth2.Config) (*http.Client, error) {
     ctx := context.Background()
     token, err := config.Exchange(ctx, "auth-code")
@@ -444,22 +428,23 @@ func (s *AuthGoogleService) GetClient(config *oauth2.Config) (*http.Client, erro
 }
 ```
 
-**Mock (Used for Testing)**:
+### Mock (Used for Testing):
 ```go
+// MockAuthService struct
 type MockAuthService struct{}
 
+// Implement GetClient for mock
 func (m *MockAuthService) GetClient(config *oauth2.Config) (*http.Client, error) {
     return &http.Client{}, nil
 }
 ```
 - Use **MockAuthService** in tests to avoid real API calls.
 
-
 ---
-
-</textarea>
+    </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
         var slideshow = remark.create();
     </script>
 </body>
+</html>
