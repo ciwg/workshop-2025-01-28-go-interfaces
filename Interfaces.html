@@ -321,8 +321,7 @@ func (m MockStorage) RetrieveHash(hash string) ([]byte, error) {
 ---
 
 ### DriveServiceInterface
-
-```
+``` 
 type DriveServiceInterface interface {
     FilesList(ctx context.Context, folderID string) ([]File, error)
     FetchRevisionCount(docID string) (int, error)
@@ -332,10 +331,8 @@ type DriveServiceInterface interface {
 }
 ```
 	    
----
-	    
+---	    
 ### Used in production code
-
 ```
 type GoogleDriveService struct {
     service *drive.Service // Google Drive API client
@@ -355,9 +352,7 @@ func (g *GoogleDriveService) FilesList(ctx context.Context, folderID string) ([]
     }
     return fileList, nil
 }
-
 ```
-
 ---
 
 ### For testing
