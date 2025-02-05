@@ -405,13 +405,9 @@ type AuthService interface {
     GetClient(config *oauth2.Config) (*http.Client, error)
 }
 ```
-- Defines a common contract for authentication.
-- Both production and mock implementations must satisfy this interface.
-
 ---
 
 ## Production vs. Mock Implementation
-
 ### Production (Real OAuth Client):
 ```go
 // AuthGoogleService struct
@@ -427,6 +423,8 @@ func (s *AuthGoogleService) GetClient(config *oauth2.Config) (*http.Client, erro
     return config.Client(ctx, token), nil
 }
 ```
+- Defines a common contract for authentication.
+- Both production and mock implementations must satisfy this interface.
 
 ### Mock (Used for Testing):
 ```go
