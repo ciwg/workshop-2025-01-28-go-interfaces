@@ -42,7 +42,7 @@ func (g GenericEmployee) WorkDetails() (int, int) {
 // GenericEmployee implements the rest of the Employee interface.
 func (g GenericEmployee) Skills() []string {
 	panic("Skills() method not implemented on GenericEmployee and should not be called.  It should be overridden by e.g. Writer, Artist, and Maker.")
-	return []string{}
+	// return []string{}  //This is a placeholder
 }
 
 // Employee interface defines the methods that must be implemented by
@@ -132,6 +132,7 @@ func MostSenior(eList []Employee) Employee {
 func main() {
 	// Create a Writer instance
 	writer := Writer{
+
 		// Because the GenericEmployee struct is embedded in the Writer struct,
 		// we initialize it here as a nested struct literal.  Note
 		// that the left-hand side of the colon is the field name in
